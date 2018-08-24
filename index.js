@@ -15,7 +15,7 @@ const faker = require('faker');
 */
 
 /*
-  The number of files that the script will generator. Pretty self explanatory.
+  The number of files that the script will generate. Pretty self explanatory.
 */
 
 const numberOfFiles = 10;
