@@ -1,0 +1,14 @@
+{
+  "name": "linnia-json-files-generator",
+  "version": "1.0.0",
+  "description": "A library to generator dummy json files",
+  "main": "index.js",
+  "scripts": {
+    "generate": "node index.js"
+  },
+  "author": "Max Blaushild",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "faker": "^4.1.0"
+  }
+}
