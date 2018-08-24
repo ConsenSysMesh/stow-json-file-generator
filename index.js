@@ -74,6 +74,11 @@ const generateFileData = () => {
 
   Object.entries(fileSchema).forEach((pair) => {
     const [ key, value ] = pair;
+
+    if (typeof value !== 'function') {
+      throw Error('Value of fileSchema properties must be functions.');
+    }
+
     fileData[key] = value();
   });
 
