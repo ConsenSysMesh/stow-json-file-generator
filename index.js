@@ -52,6 +52,13 @@ const fileSchema = {
       return age;
     };
   })(),
+  // address with child elements
+  address: {
+  	street: faker.address.streetAddress,
+  	city: faker.address.city,
+  	state: faker.address.state,
+  	postalCode: faker.address.zipCode
+  },
   // will always set favoritePet to cats
   favoritePet: () => 'cats'
 };
@@ -69,30 +76,47 @@ const generateFileName = (fileData) => fileData.name;
   ***********************************************************
 */
 
+function iterate(element) {
+
+	const tempData = {};
+
+	Object.entries(element).forEach((pair) => {
+
+	    const [ key, value ] = pair;
+
+	    if (typeof value !== 'function') {
+
+	    	tempData[key] = iterate(value);
+
+	    } else {
+
+			  tempData[key] = value();
+	    }
+	});
+
+	return tempData;
+}
+
 const generateFileData = () => {
-  const fileData = {};
 
-  Object.entries(fileSchema).forEach((pair) => {
-    const [ key, value ] = pair;
-
-    if (typeof value !== 'function') {
-      throw Error('Value of fileSchema properties must be functions.');
-    }
-
-    fileData[key] = value();
-  });
-
-  return fileData;
+	return iterate(fileSchema);
 };
 
 const generateFiles = async () => {
+
+  var dir = './files';
+
+  if (!fs.existsSync(dir)){
+
+    fs.mkdirSync(dir);
+  }
+
   for (let i = 0; i < numberOfFiles; i++) {
     const fileData = generateFileData();
     const fileName = generateFileName(fileData);
-    const json = JSON.stringify(fileData);
-    fs.writeFileSync(`./files/${fileName}.json`, json);
+    const json = JSON.stringify(fileData, null, 4);
+    fs.writeFileSync(dir + `/${fileName}.json`, json);
   }
 };
 
 generateFiles();
-
